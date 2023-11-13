@@ -1,37 +1,55 @@
-// Include necessary headers
-#include <iostream>
+#include <ros/ros.h>
+#include <geometry_msgs/Twist.h>
+#include <std_msgs/Int32MultiArray.h>
+#include <std_msgs/ColorRGBA.h>
 #include <thread>
 #include <chrono>
 
-class Rosmaster {
+class RosRobot {
 public:
     
-    Rosmaster() {
-        create_receive_threading();
+    RosRobot() {
+        // Initialize ROS node handles and publishers
+        ros::NodeHandle nh;
+        motion_pub = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 10);
+        servo_pub = nh.advertise<std_msgs::Int32MultiArray>("/servo_cmd", 10);
+        light_pub = nh.advertise<std_msgs::ColorRGBA>("/light_cmd", 10);
     }
 
-    void set_car_motion(double speed_x, double speed_y, double speed_z) {
-        // Set car motion here
+    void set_robot_velocity(double linear_x, double linear_y, double angular_z) {
+        geometry_msgs::Twist msg;
+        msg.linear.x = linear_x;
+        msg.linear.y = linear_y;
+        msg.angular.z = angular_z;
+        motion_pub.publish(msg);
     }
 
-    void set_uart_servo_angle_array(const std::vector<int>& angles) {
-        // Set servo angles here
+    void set_servo_angles(const std::vector<int>& angles) {
+        std_msgs::Int32MultiArray msg;
+        msg.data = angles;
+        servo_pub.publish(msg);
     }
 
-    void set_colorful_lamps(int flag, int r, int g, int b) {
-        // Set RGB colors here
+    void set_light_color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 0xff) {
+        std_msgs::ColorRGBA msg;
+        msg.r = r;
+        msg.g = g;
+        msg.b = b;
+        msg.a = a; // alpha channel, for transparency (if supported)
+        light_pub.publish(msg);
     }
 
 private:
-
-    void create_receive_threading() {
-    }
-
+    ros::Publisher motion_pub;
+    ros::Publisher servo_pub;
+    ros::Publisher light_pub;
 };
 
-class Robot {
+class RobotController {
 public:
-    Robot() : bot(new Rosmaster()) {}
+    RobotController() : bot(new RosRobot()) {}
+
+        Robot() : bot(new Rosmaster()) {}
 
     void car_motion(double V_x, double V_y, double V_z) {
         double speed_x = V_x / 10.0;
@@ -138,13 +156,18 @@ public:
     }
 
 private:
-    std::unique_ptr<Rosmaster> bot;
+    std::unique_ptr<RosRobot> bot;
 };
 
-int main() {
-    Robot robot;
+int main(int argc, char **argv) {
+    // Initialize the ROS system
+    ros::init(argc, argv, "robot_controller");
+    RobotController robot;
 
     // Call methods on the robot object to perform actions
     robot.perform_actions();
+    return 0;
+
+    ros::spin();
     return 0;
 }
