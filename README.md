@@ -60,7 +60,7 @@ As we all know, robots can pose a hazard if we enter their operational zone. To 
 ## My Project Video Demonstration:
 
 <p align="center">
-  <a href="https://www.linkedin.com/posts/tvharikrishna_reinforcementlearning-machinelearning-neuralnetwork-activity-7118597093476196352-Q_cM?utm_source=share&utm_medium=member_desktop">
+  <a href="1">
     <img src="https://img.shields.io/badge/Video-Watch Mobile Robot in Action-blue" alt="Video"/>
   </a>
 </p>
