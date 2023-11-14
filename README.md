@@ -60,7 +60,7 @@ As we all know, robots can pose a hazard if we enter their operational zone. To 
 ## My Project Video Demonstration:
 
 <p align="center">
-  <a href="1">
+  <a href="https://www.linkedin.com/feed/update/urn:li:activity:7130040549587243008?utm_source=share&utm_medium=member_ios">
     <img src="https://img.shields.io/badge/Video-Watch Mobile Robot in Action-blue" alt="Video"/>
   </a>
 </p>
